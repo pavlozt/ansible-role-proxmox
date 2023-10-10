@@ -144,7 +144,7 @@
     cache_valid_time: 3600
     upgrade: dist
   when: _pve_repo is changed or _pve_ceph_repo is changed
-  retries: 2
+  retries: 10
   register: _dist_upgrade
   until: _dist_upgrade is succeeded
 
@@ -154,7 +154,7 @@
     cache_valid_time: 3600
     upgrade: dist
   when: "pve_run_system_upgrades | bool"
-  retries: 2
+  retries: 10
   register: _system_upgrade
   until: _system_upgrade is succeeded
 
@@ -166,7 +166,7 @@
     cache_valid_time: 3600
     name: "{{ _pve_install_packages }}"
     state: "{{ 'latest' if pve_run_proxmox_upgrades else 'present' }}"
-  retries: 2
+  retries: 25
   register: _proxmox_install
   until: _proxmox_install is succeeded
 
